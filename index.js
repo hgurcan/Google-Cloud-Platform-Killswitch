@@ -6,7 +6,12 @@ const PROJECT_NAME = `projects/${PROJECT_ID}`;
 const billing = google.cloudbilling('v1').projects;
 
 exports.stopBilling = async pubsubEvent => {
-  console.log(pubsubEvent.data);
+  console.log(pubsubEvent);
+
+  if (!pubsubEvent.data) {
+    console.error("No data property in pubsub event.");
+    return "No data provided in event.";
+  }
 
   const pubsubData = JSON.parse(
     Buffer.from(pubsubEvent.data, 'base64').toString()
